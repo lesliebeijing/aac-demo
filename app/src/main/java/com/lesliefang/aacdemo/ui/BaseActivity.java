@@ -2,6 +2,7 @@ package com.lesliefang.aacdemo.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.lesliefang.aacdemo.R;
 
@@ -16,11 +17,15 @@ public class BaseActivity extends AppCompatActivity {
         pb = findViewById(R.id.pb);
     }
 
-    public void showProcessBar() {
+    protected void showProcessBar() {
         pb.setVisibility(ProgressBar.VISIBLE);
     }
 
-    public void hideProcessBar() {
+    protected void hideProcessBar() {
         pb.setVisibility(ProgressBar.GONE);
+    }
+
+    protected void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

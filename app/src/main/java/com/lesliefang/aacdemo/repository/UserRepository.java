@@ -2,18 +2,15 @@ package com.lesliefang.aacdemo.repository;
 
 import android.arch.lifecycle.LiveData;
 import android.content.Context;
-import android.util.Log;
 
 import com.lesliefang.aacdemo.api.RetrofitClient;
 import com.lesliefang.aacdemo.api.UserService;
 import com.lesliefang.aacdemo.db.AppDatabase;
 import com.lesliefang.aacdemo.db.UserDao;
+import com.lesliefang.aacdemo.vo.Resource;
 import com.lesliefang.aacdemo.vo.User;
 
-import java.io.IOException;
-import java.util.concurrent.Executors;
-
-import retrofit2.Response;
+import retrofit2.Call;
 
 /**
  * Created by leslie.fang on 2018-02-27.
@@ -28,18 +25,23 @@ public class UserRepository {
         userDao = AppDatabase.getInstance(context).userDao();
     }
 
-    public LiveData<User> getUser() {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            if (!userDao.userExists()) {
-                Log.d("leslie", "not exists fetch from network");
-                try {
-                    Response<User> response = userService.getUser().execute();
-                    userDao.save(response.body());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public LiveData<Resource<User>> getUser() {
+        return new NetworkBoundResource<User>() {
+
+            @Override
+            protected Call<User> loadData() {
+                return userService.getUser();
             }
-        });
-        return userDao.load();
+
+            @Override
+            protected void saveToDb(User user) {
+                userDao.save(user);
+            }
+
+            @Override
+            protected LiveData<User> loadFromDb() {
+                return userDao.load();
+            }
+        }.getResult();
     }
 }

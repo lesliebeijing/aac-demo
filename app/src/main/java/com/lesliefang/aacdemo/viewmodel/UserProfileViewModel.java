@@ -6,6 +6,7 @@ import android.arch.lifecycle.LiveData;
 import android.support.annotation.NonNull;
 
 import com.lesliefang.aacdemo.repository.UserRepository;
+import com.lesliefang.aacdemo.vo.Resource;
 import com.lesliefang.aacdemo.vo.User;
 
 /**
@@ -13,7 +14,6 @@ import com.lesliefang.aacdemo.vo.User;
  */
 
 public class UserProfileViewModel extends AndroidViewModel {
-    private LiveData<User> user;
     private UserRepository userRepository;
 
     public UserProfileViewModel(@NonNull Application application) {
@@ -21,8 +21,7 @@ public class UserProfileViewModel extends AndroidViewModel {
         userRepository = new UserRepository(getApplication());
     }
 
-    public LiveData<User> getUser() {
-        user = userRepository.getUser();
-        return user;
+    public LiveData<Resource<User>> getUser() {
+        return userRepository.getUser();
     }
 }
