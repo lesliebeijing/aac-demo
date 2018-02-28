@@ -2,6 +2,7 @@ package com.lesliefang.aacdemo.ui;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.lesliefang.aacdemo.R;
@@ -20,6 +21,7 @@ public class MainActivity extends BaseActivity {
 
         viewModel = ViewModelProviders.of(this).get(UserProfileViewModel.class);
         viewModel.getUser().observe(this, user -> {
+            Log.d("leslie", "observe " + user);
             if (user != null) {
                 mUserInfo.setText(user.getId() + "\n" + user.getName());
             }
