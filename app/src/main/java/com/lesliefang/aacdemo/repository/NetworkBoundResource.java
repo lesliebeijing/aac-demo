@@ -62,6 +62,7 @@ public abstract class NetworkBoundResource<T> {
 
             @Override
             public void onFailure(Call<T> call, Throwable t) {
+                result.removeSource(dbSource);
                 result.addSource(dbSource, data -> result.setValue(Resource.error(t.getMessage(), data)));
             }
         });
